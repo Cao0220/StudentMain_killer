@@ -18,39 +18,42 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import time
 
-def gan_3():
+def gan_3(pid):
     print("已进入娱乐模式……\n按 Ctrl+C 或 直接关闭程序窗口 以退出\n*^____^*\n")
     while True:
+        time.sleep(0.5)
+        b=os.system("pssuspend64.exe"+" "+str(pid))
         print("正在挂起",end="\r")
-        b=os.system("pssuspend64.exe"+" "+str(pid.pid))
         if b==0 :
             print("挂起成功，约60秒后恢复",end="\r")
             print("                                ",end="\r")
             for i in range(6000):
                 print("██ "*(i//600), end = '')
-                print("█ "*(i//300-2*(i//600)), format(i/60,".2f"), "%\r", end = '')
+                print("█ "*(i//300-2*(i//600)), format(i/60,".2f"),"%|",i//10/10,"s lift" "\r", end = '')
                 time.sleep(0.01)
-            print('██ '*10+'                ',end="\r")
-        b=os.system("pssuspend64.exe"+" "+str(pid.pid)+' -r')
+            print('██ '*10+'                          ',end="\r")
+        b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
         print("正在恢复",end="\r")
-        time.sleep(0.1)
+        time.sleep(0.001)
 
 def gan(oid,name):
     pids = psutil.process_iter()
     print("[" + name + "]'s pid is:")
+    b=1
     for pid in pids:
         if(pid.name() == name):
             print(pid.pid)
-            time.sleep(15)
             b=1
             if oid=="1" :
                 b=os.system("pssuspend64.exe"+" "+str(pid.pid))
             elif oid=="2" :
                 b=os.system("pssuspend64.exe"+" "+str(pid.pid)+' -r')
             elif oid=="3" :
-                gan_3()
+                gan_3(pid.pid)
             elif oid=="4" :
                 b=os.system("taskkill -f -im StudentMain.exe")
+            
+            time.sleep(15)
     return b
 
 def install_psutil(n):
