@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import time
+import msvcrt
 
 def gan_3(pid):
     print("已进入娱乐模式……\n按 Ctrl+C 或 直接关闭程序窗口 以退出\n*^____^*\n")
@@ -28,12 +29,22 @@ def gan_3(pid):
             print("挂起成功，约60秒后恢复",end="\r")
             print("                                ",end="\r")
             for i in range(6000):
+                if msvcrt.kbhit():
+                    # print(msvcrt.getch())
+                    if msvcrt.getch()== b'\x1b': 
+                        b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
+                    if msvcrt.getch()== b'\x1b': 
+                        b=os.system("pssuspend64.exe"+" "+str(pid))
                 print("██ "*(i//600), end = '')
                 print("█ "*(i//300-2*(i//600)), format(i/60,".2f"),"%|",i//10/10,"s lift" "\r", end = '')
                 time.sleep(0.01)
             print('██ '*10+'                          ',end="\r")
         b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
         print("正在恢复",end="\r")
+        if msvcrt.kbhit():
+            print(msvcrt.getch())
+            if msvcrt.getch()== b'\x1b': 
+                return(0)
         time.sleep(0.001)
 
 def gan(oid,name):
@@ -49,11 +60,10 @@ def gan(oid,name):
             elif oid=="2" :
                 b=os.system("pssuspend64.exe"+" "+str(pid.pid)+' -r')
             elif oid=="3" :
-                gan_3(pid.pid)
+                b=gan_3(pid.pid)
             elif oid=="4" :
                 b=os.system("taskkill -f -im StudentMain.exe")
-            
-            time.sleep(15)
+            #time.sleep(5)
     return b
 
 def install_psutil(n):
