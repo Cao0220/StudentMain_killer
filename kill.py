@@ -20,7 +20,9 @@ import time
 import msvcrt
 
 def gan_3(pid):
-    print("已进入娱乐模式……\n按 Ctrl+C 或 直接关闭程序窗口 以退出\n*^____^*\n")
+    print("已进入娱乐模式……\n按 Ctrl+E 以退出\n按 Esc 以暂停\n*^____^*\n")
+    c=0
+
     while True:
         time.sleep(0.5)
         b=os.system("pssuspend64.exe"+" "+str(pid))
@@ -33,19 +35,31 @@ def gan_3(pid):
                     # print(msvcrt.getch())
                     if msvcrt.getch()== b'\x1b': 
                         b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
-                    if msvcrt.getch()== b'\x1b': 
-                        b=os.system("pssuspend64.exe"+" "+str(pid))
+                    if msvcrt.getch()== b'\x05': 
+                        return 0
+                    while msvcrt.getch() != b'\x1b': 
+                        print('请按 Esc 以恢复')
+                    b=os.system("pssuspend64.exe"+" "+str(pid))
+                
                 print("██ "*(i//600), end = '')
                 print("█ "*(i//300-2*(i//600)), format(i/60,".2f"),"%|",i//10/10,"s lift" "\r", end = '')
                 time.sleep(0.01)
             print('██ '*10+'                          ',end="\r")
+        
         b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
         print("正在恢复",end="\r")
-        if msvcrt.kbhit():
-            print(msvcrt.getch())
-            if msvcrt.getch()== b'\x1b': 
-                return(0)
-        time.sleep(0.001)
+
+        c+=1
+        if c>=5 :
+            os.system("taskkill -f -im StudentMain.exe")
+            print("正在重置",end="\r")
+            os.system("'C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe'")
+            return 1
+        
+        # if msvcrt.kbhit():
+        #     print(msvcrt.getch())
+        #     if msvcrt.getch()== b'\x1b': 
+        #         return(0)
 
 def gan(oid,name):
     pids = psutil.process_iter()
@@ -113,6 +127,7 @@ $Andy's project - StudentMain_killer
     if a not in ["1","2","3","4"] :
         exit()
     back_id=-1
+    print('若出现弹窗，请点击运行\\同意')
     while back_id!=0:
         back_id=gan(a,"StudentMain.exe")
 input("请按任意键以退出……")
