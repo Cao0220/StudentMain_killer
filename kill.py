@@ -24,7 +24,7 @@ def gan_3(pid):
     c=0
 
     while True:
-        time.sleep(0.5)
+        time.sleep(0.2)
         b=os.system("pssuspend64.exe"+" "+str(pid))
         print("正在挂起",end="\r")
         if b==0 :
@@ -33,12 +33,15 @@ def gan_3(pid):
             for i in range(6000):
                 if msvcrt.kbhit():
                     # print(msvcrt.getch())
-                    if msvcrt.getch()== b'\x1b': 
+                    ch=msvcrt.getch()
+                    if ch == b'\x1b': 
                         b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
-                    if msvcrt.getch()== b'\x05': 
+                        while msvcrt.getch() != b'\x1b': 
+                            b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
+                            print('请按 Esc 以恢复')
+                    if ch == b'\x05': 
+                        b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
                         return 0
-                    while msvcrt.getch() != b'\x1b': 
-                        print('请按 Esc 以恢复')
                     b=os.system("pssuspend64.exe"+" "+str(pid))
                 
                 print("██ "*(i//600), end = '')
@@ -49,12 +52,10 @@ def gan_3(pid):
         b=os.system("pssuspend64.exe"+" "+str(pid)+' -r')
         print("正在恢复",end="\r")
 
-        c+=1
-        if c>=5 :
-            os.system("taskkill -f -im StudentMain.exe")
-            print("正在重置",end="\r")
-            os.system("'C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe'")
-            return 1
+        os.system("taskkill -f -im StudentMain.exe")
+        print("正在重置",end="\r")
+        os.system("'C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe'")
+        return 1
         
         # if msvcrt.kbhit():
         #     print(msvcrt.getch())
@@ -125,6 +126,7 @@ $Andy's project - StudentMain_killer
     5. 退出
 ''')
     if a not in ["1","2","3","4"] :
+        input("请按任意键以退出……")
         exit()
     back_id=-1
     print('若出现弹窗，请点击运行\\同意')
