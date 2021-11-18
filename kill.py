@@ -54,7 +54,7 @@ def gan_3(pid):
 
         os.system("taskkill -f -im StudentMain.exe")
         print("正在重置",end="\r")
-        os.system("'C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe'")
+        os.system('"C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe"')
         return 1
         
         # if msvcrt.kbhit():
