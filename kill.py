@@ -19,9 +19,25 @@ import os
 import time
 import msvcrt
 
+def searchFile(Path, File):
+    global back_path
+    #获取当前路径下地所有文件
+    allFile=os.listdir(Path)
+    #对于每一个文件
+    for eachFile in allFile:
+        #若文件为一个文件夹
+        if os.path.isdir(Path+os.sep+eachFile):
+            #递归查找
+            searchFile(Path+os.sep+eachFile, File)
+        #如果是需要被查找的文件
+        elif eachFile==File:
+            #输出路径
+            back_path=Path
+
 def gan_3(pid):
     print("已进入娱乐模式……\n按 Ctrl+E 以退出\n按 Esc 以暂停\n*^____^*\n")
     c=0
+    global back_path
 
     while True:
         time.sleep(0.2)
@@ -54,7 +70,8 @@ def gan_3(pid):
 
         os.system("taskkill -f -im StudentMain.exe")
         print("正在重置",end="\r")
-        os.system('"C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe"')
+        # os.system('"C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe"')
+        os.system(back_path)
         return 1
         
         # if msvcrt.kbhit():
@@ -128,6 +145,9 @@ $Andy's project - StudentMain_killer
     if a not in ["1","2","3","4"] :
         input("请按任意键以退出……")
         exit()
+    back_path=""
+    searchFile('C:\Program Files (x86)\Mythware', 'StudentMain.exe')
+    back_path+="\StudentMain.exe"
     back_id=-1
     print('若出现弹窗，请点击运行\\同意')
     while back_id!=0:
