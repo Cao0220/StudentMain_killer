@@ -61,7 +61,7 @@ def gan_3(pid):
                     b=os.system("pssuspend64.exe"+" "+str(pid))
                 
                 print("██ "*(i//600), end = '')
-                print("█ "*(i//300-2*(i//600)), format(i/60,".2f"),"%|",i//10/10,"s lift" "\r", end = '')
+                print("█ "*(i//300-2*(i//600)), format(i/60,".2f"),"%|",format(60-i//10/10,".1f"),"s lift" "\r", end = '')
                 time.sleep(0.01)
             print('██ '*10+'                          ',end="\r")
         
@@ -71,7 +71,7 @@ def gan_3(pid):
         os.system("taskkill -f -im StudentMain.exe")
         print("正在重置",end="\r")
         # os.system('"C:\Program Files (x86)\Mythware\极域电子教室软件 v4.0 2016 豪华版\StudentMain.exe"')
-        os.system(back_path)
+        os.system('start "" "'+back_path+'"')
         return 1
         
         # if msvcrt.kbhit():
@@ -95,6 +95,8 @@ def gan(oid,name):
                 b=gan_3(pid.pid)
             elif oid=="4" :
                 b=os.system("taskkill -f -im StudentMain.exe")
+            elif oid=="5" :
+                b=os.system('start "" "'+back_path+'"')
             #time.sleep(5)
     return b
 
@@ -140,9 +142,10 @@ $Andy's project - StudentMain_killer
     2. 取消挂起
     3. 娱乐模式
     4. 杀掉
-    5. 退出
+    5. 启动
+    6. 退出
 ''')
-    if a not in ["1","2","3","4"] :
+    if a not in ["1","2","3","4","5"] :
         input("请按任意键以退出……")
         exit()
     back_path=""
