@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import time
 import msvcrt
+import sys
 
 def searchFile(Path, File):
     global back_path
@@ -40,7 +41,7 @@ def gan_3(pid):
     global back_path
 
     while True:
-        time.sleep(0.2)
+        time.sleep(0.5)
         b=os.system("pssuspend64.exe"+" "+str(pid))
         print("正在挂起",end="\r")
         if b==0 :
@@ -108,7 +109,9 @@ def install_psutil(n):
         temp=os.system('py -m pip install psutil -i https://pypi.mirrors.ustc.edu.cn/simple/')
         # temp=os.system('start cmd /K py -m pip install psutil -i https://pypi.mirrors.ustc.edu.cn/simple/')
         if temp!=0 : print("执行失败")
-        if temp==0 :print("安装完成:)")
+        if temp==0 : 
+            print("安装完成:)")
+            os.execv(__file__, sys.argv)
         if n==0: exit()
         install_psutil(n-1)
 
@@ -132,9 +135,8 @@ O))         O)) O)))  O))  O)) O))   O))
                                     O))     
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 $Andy's project - StudentMain_killer
-'''
-    )
-    a=""
+''')
+
     a=input(
 '''
 请输入命令代码：
@@ -145,14 +147,22 @@ $Andy's project - StudentMain_killer
     5. 启动
     6. 退出
 ''')
+
     if a not in ["1","2","3","4","5"] :
         input("请按任意键以退出……")
         exit()
+
     back_path=""
     searchFile('C:\Program Files (x86)\Mythware', 'StudentMain.exe')
     back_path+="\StudentMain.exe"
+
     back_id=-1
     print('若出现弹窗，请点击运行\\同意')
+    if a=='5':
+        os.system('start "" "'+back_path+'"')
+        continue
+
     while back_id!=0:
         back_id=gan(a,"StudentMain.exe")
+
 input("请按任意键以退出……")
